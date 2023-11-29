@@ -1,11 +1,8 @@
 package com.example.studentregistrationapp
 
 import android.graphics.Bitmap
+import android.os.Environment
 import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -14,10 +11,15 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.apache.poi.ss.usermodel.Row
+import org.apache.poi.ss.usermodel.Sheet
+import org.apache.poi.ss.usermodel.Workbook
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import java.io.File
+import java.io.FileOutputStream
 
 class StudentViewModel(
     private val dao: StudentDao
@@ -86,6 +88,9 @@ class StudentViewModel(
 
     fun onEvent(event: StudentEvent) {
         when(event) {
+            is StudentEvent.ShareStudentData -> {
+                exportToExcel(state.value.students, generateFilePath("StudentData.xlsx", Environment.DIRECTORY_DOWNLOADS))
+            }
             is StudentEvent.SetStudentToUpdate -> {
                 studentEdit.value = event.student
             }
@@ -197,3 +202,51 @@ class StudentViewModelFactory(private val dao: StudentDao): ViewModelProvider.Fa
         return StudentViewModel(dao) as T
     }
 }
+
+private fun generateFilePath(
+    fileName: String,
+    directoryType: String
+): String {
+//Get the public directory for the specified type
+val publicDirectory = Environment.getExternalStoragePublicDirectory (directoryType)
+/// Create a subdirectory within the public directory
+val subdirectory = File (publicDirectory,  "YourAppDirectoryName")
+//Ensure that the subdirectory exists; create it if not
+if (!subdirectory.exists()) {
+    subdirectory.mkdirs()
+}
+/// Create a File object with the specified subdirectory and file name
+val file = File(subdirectory, fileName)
+/// Return the absolute path of the file
+return file.absolutePath
+}
+
+
+private fun exportToExcel(students: List<Student>, filePath: String) {
+    val workbook: Workbook = XSSFWorkbook()
+    val sheet: Sheet = workbook.createSheet(  "Sheetl")
+//    / Create header PoW
+    val headerRow: Row = sheet.createRow(  0)
+    headerRow.createCell(  0).setCellValue("FirstName")
+    headerRow.createCell(1).setCellValue("LastName")
+    headerRow.createCell(  2).setCellValue("Course")
+    headerRow. createCell(  3) . setCellValue("Faculty")
+    headerRow.createCell( 4).setCellValue("Location")
+    headerRow.createCell( 5).setCellValue ("StudentID")
+
+//    Add other headers as needed
+//    Populate data
+            for ((index, obj) in students.withIndex()) {
+                val dataRow: Row = sheet.createRow(index +1)
+                dataRow.createCell( 0).setCellValue (obj.firstName)
+                dataRow.createCell( 1).setCellValue (obj.lastName)
+                dataRow.createCell(2).setCellValue(obj.course)
+                dataRow.createCell( 3).setCellValue(obj.faculty)
+                dataRow.createCell(4).setCellValue(obj.location)
+                dataRow.createCell( 5).setCellValue(obj.studentID.toString())
+//                Add other data as needed
+//                / Write to file
+                FileOutputStream(filePath).use { fileOut -> workbook.write(fileOut) }
+//                / CLose workbook to release resources
+                workbook.close()
+            }}

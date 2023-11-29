@@ -29,6 +29,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.studentregistrationapp.CameraPreview
+import com.example.studentregistrationapp.StudentEvent
+import com.example.studentregistrationapp.StudentViewModel
 import java.io.File
 import java.io.FileOutputStream
 

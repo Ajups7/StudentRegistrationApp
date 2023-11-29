@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.studentregistrationapp"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -80,4 +80,7 @@ dependencies {
     implementation("androidx.camera:camera-video:1.3.0")
     implementation("androidx.camera:camera-view:1.3.0")
     implementation("androidx.camera:camera-extensions:1.3.0")
+    implementation("org.apache.poi:poi:5.2.5")
+    implementation("org.apache.poi:poi-ooxml:5.2.5")
+
 }

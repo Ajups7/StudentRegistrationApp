@@ -31,13 +31,13 @@ class AdminViewModel(
                 ) }
 
 
-                }
+            }
             is AdminEvent.EnterPinButton -> {
 
                 submitData()
             }
-            }
         }
+    }
 
     private fun submitData() {
         val pinResult = validatePin.execute(state.value.pin)
@@ -52,34 +52,34 @@ class AdminViewModel(
                     it.copy(pinError= errorMsg)
                 }
             }
-        return}
+                return}
 
-        else-> {
-            val initialPin = sharedPref.getSharedPref()
-            Log.d("boyss", initialPin.toString())
-        if (!initialPin.isNullOrEmpty()) {
-            if (initialPin == state.value.pin) {
-        viewModelScope.launch {
-            validationEventChannel.send(ValidationEvent.Success)}
+            else-> {
+                val initialPin = sharedPref.getSharedPref()
+                Log.d("boyss", initialPin.toString())
+                if (!initialPin.isNullOrEmpty()) {
+                    if (initialPin == state.value.pin) {
+                        viewModelScope.launch {
+                            validationEventChannel.send(ValidationEvent.Success)}
 
-            }
-            else{
-                _state.update{
-                        it.copy(pinError= "Incorrect Pin, Use Inital Pin")
+                    }
+                    else{
+                        _state.update{
+                            it.copy(pinError= "Incorrect Pin, Use Inital Pin")
+                        }
+
+                    }
+                } else{
+                    Log.d("boys", "we in the else block")
+
+
+                    sharedPref.updateSharedPref(state.value.pin)
+                    viewModelScope.launch {
+                        validationEventChannel.send(ValidationEvent.Success)}
                 }
-
             }
-        } else{
-            Log.d("boys", "we in the else block")
 
-
-                sharedPref.updateSharedPref(state.value.pin)
-            viewModelScope.launch {
-                validationEventChannel.send(ValidationEvent.Success)}
         }
-    }
-
-    }
 
     }
     sealed class ValidationEvent {

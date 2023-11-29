@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
+import com.example.studentregistrationapp.StudentDatabase
 import com.example.studentregistrationapp.ui.theme.StudentRegistrationAppTheme
 
 class MainActivity : ComponentActivity() {

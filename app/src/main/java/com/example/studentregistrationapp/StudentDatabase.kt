@@ -2,6 +2,7 @@ package com.example.studentregistrationapp
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.example.studentregistrationapp.Student
 
 @Database(
     entities = [Student::class],

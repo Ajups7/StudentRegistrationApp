@@ -7,6 +7,16 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.studentregistrationapp.AdminLoginScreen
+import com.example.studentregistrationapp.AdminViewModel
+import com.example.studentregistrationapp.AdminViewModelFactory
+import com.example.studentregistrationapp.SearchStudent
+import com.example.studentregistrationapp.StudentEvent
+import com.example.studentregistrationapp.StudentRegistrationScreen
+import com.example.studentregistrationapp.StudentViewModel
+import com.example.studentregistrationapp.StudentViewModelFactory
+import com.example.studentregistrationapp.TakePicture
+import com.example.studentregistrationapp.StudentDatabase
 
 
 @Composable
@@ -131,4 +141,6 @@ class OnBoardingSharedPref(context: Context) {
 
 
 }
+
+
 

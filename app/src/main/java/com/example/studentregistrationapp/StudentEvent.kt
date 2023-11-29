@@ -15,5 +15,6 @@ sealed interface StudentEvent {
     data class SetImageUri(val imageUri: String): StudentEvent
     object SaveStudentImage: StudentEvent
     data class SetStudentToUpdate(val student: Student): StudentEvent
+    object ShareStudentData: StudentEvent
 
 }
